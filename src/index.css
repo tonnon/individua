@@ -1,0 +1,200 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* ————————————————————————————————————————————————
+   Individua — design tokens (direção de arte cyberpunk)
+   Neon é tempero: bordas, glows, dados e textos-chave.
+   Nunca em grandes áreas preenchidas.
+   ———————————————————————————————————————————————— */
+
+@theme {
+  /* fontes */
+  --font-display: 'Chakra Petch', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  /* paleta base */
+  --color-void: #07070d; /* fundo principal */
+  --color-panel: #0d0e1a; /* painéis */
+  --color-panel-2: #131529; /* painéis elevados / hover */
+  --color-neon: #00f0ff; /* ciano elétrico — ações, foco, XP */
+  --color-magenta: #ff2d95; /* conquistas e destaques raros */
+  --color-violet: #8b5cf6; /* gradientes e glow de nível */
+  --color-ink: #e6f1ff; /* texto primário */
+  /* spec pedia #6b7291, mas rende 4.06:1 sobre painéis (< AA 4.5).
+     #79809f mantém o tom e garante ≥4.6:1 em todos os fundos. */
+  --color-ink-dim: #79809f; /* texto secundário */
+  --color-danger: #ff4d6d;
+
+  /* glows reutilizáveis */
+  --shadow-glow-neon: 0 0 12px rgba(0, 240, 255, 0.35);
+  --shadow-glow-magenta: 0 0 12px rgba(255, 45, 149, 0.35);
+  --shadow-glow-violet: 0 0 16px rgba(139, 92, 246, 0.4);
+}
+
+/* variáveis semânticas (contrato do shadcn/ui) — tema único, dark */
+:root {
+  --radius: 0.125rem;
+  --background: var(--color-void);
+  --foreground: var(--color-ink);
+  --card: var(--color-panel);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-panel-2);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-neon);
+  --primary-foreground: #051014;
+  --secondary: var(--color-panel-2);
+  --secondary-foreground: var(--color-ink);
+  --muted: #181a30;
+  --muted-foreground: var(--color-ink-dim);
+  --accent: rgba(0, 240, 255, 0.08);
+  --accent-foreground: var(--color-neon);
+  --destructive: var(--color-danger);
+  --destructive-foreground: #16060a;
+  --border: rgba(0, 240, 255, 0.14);
+  --input: rgba(0, 240, 255, 0.18);
+  --ring: var(--color-neon);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  ::selection {
+    background: rgba(0, 240, 255, 0.25);
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
+
+/* ————— utilitários HUD ————— */
+
+/* cantos chanfrados (canto sup-esq e inf-dir cortados) */
+@utility chamfer {
+  clip-path: polygon(
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%,
+    0 12px
+  );
+}
+
+@utility chamfer-sm {
+  clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+}
+
+/* grain quase imperceptível sobre tudo (~3%) */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* scanlines opcionais (toggle em /settings) */
+.scanlines-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 3px
+  );
+}
+
+/* dot matrix discreto para o hero do login */
+.dot-matrix {
+  background-image: radial-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* glitch RGB split — RESERVADO a level up, conquista e hover no logo */
+@keyframes glitch-rgb {
+  0% {
+    text-shadow:
+      2px 0 rgba(255, 45, 149, 0.8),
+      -2px 0 rgba(0, 240, 255, 0.8);
+    transform: translate(0);
+  }
+  25% {
+    text-shadow:
+      -2px 0 rgba(255, 45, 149, 0.8),
+      2px 0 rgba(0, 240, 255, 0.8);
+    transform: translate(1px, -1px);
+  }
+  50% {
+    text-shadow:
+      2px 1px rgba(255, 45, 149, 0.8),
+      -2px -1px rgba(0, 240, 255, 0.8);
+    transform: translate(-1px, 1px);
+  }
+  100% {
+    text-shadow: none;
+    transform: translate(0);
+  }
+}
+
+.glitch-once {
+  animation: glitch-rgb 0.3s steps(4, end) 1;
+}
+
+.glitch-hover:hover {
+  animation: glitch-rgb 0.3s steps(4, end) 1;
+}
+
+/* moldura evolutiva (ranks A/S) e partículas orbitando */
+@keyframes frame-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-frame-spin {
+  animation: frame-spin 7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-once,
+  .glitch-hover:hover,
+  .animate-frame-spin {
+    animation: none;
+  }
+}

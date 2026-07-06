@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Individua — ícone PWA: painel chanfrado + "I" neon -->
+  <rect width="512" height="512" fill="#07070d"/>
+  <polygon points="96,64 448,64 448,384 416,416 416,448 64,448 64,128"
+           fill="#0d0e1a" stroke="#00f0ff" stroke-width="10" stroke-opacity="0.55"/>
+  <rect x="226" y="128" width="60" height="256" fill="#00f0ff"/>
+  <rect x="186" y="128" width="140" height="34" fill="#00f0ff"/>
+  <rect x="186" y="350" width="140" height="34" fill="#00f0ff"/>
+  <rect x="186" y="128" width="140" height="34" fill="#00f0ff" opacity="0.35" transform="translate(0 8)"/>
+  <circle cx="416" cy="96" r="14" fill="#ff2d95"/>
+</svg>

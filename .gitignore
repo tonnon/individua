@@ -1,0 +1,23 @@
+# deps / build
+node_modules
+dist
+coverage
+.claude
+
+# env — nunca commitar segredos
+.env
+.env.*
+!.env.example
+
+# tooling
+.vercel
+.wrangler
+*.local
+.DS_Store
+
+# supabase local
+supabase/.temp
+supabase/.branches
+
+# tanstack router plugin temp
+.tanstack
